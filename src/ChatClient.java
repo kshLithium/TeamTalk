@@ -5,7 +5,7 @@ import java.net.*; // 네트워크 소켓 관련 라이브러리 임포트
 
 public class ChatClient {
     private static final String SERVER_ADDRESS = "localhost"; // 서버 주소 설정
-    private static final int SERVER_PORT = 12345; // 서버 포트 설정
+    private static final int SERVER_PORT = 12349; // 서버 포트 설정
 
     private BufferedReader in; // 서버로부터 메시지를 읽기 위한 BufferedReader
     private PrintWriter out; // 서버로 메시지를 전송하기 위한 PrintWriter
@@ -25,10 +25,9 @@ public class ChatClient {
     private String promptForUserName() {
         return JOptionPane.showInputDialog(
                 null,
-                "Enter your name:", // 입력창 메시지
-                "Username", // 입력창 제목
-                JOptionPane.PLAIN_MESSAGE
-        );
+                "유저 이름을 입력하시오:", // 입력창 메시지
+                "유저이름", // 입력창 제목
+                JOptionPane.PLAIN_MESSAGE);
     }
 
     // GUI 구성 요소를 설정하는 메서드

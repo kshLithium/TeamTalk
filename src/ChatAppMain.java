@@ -12,17 +12,17 @@ public class ChatAppMain extends JFrame {
     // 생성자: 사용자 이름을 인자로 받아 UI 설정 및 초기화
     public ChatAppMain(String userName) {
         this.userName = userName; // StartScreen에서 전달받은 사용자 이름
-        setTitle("Chat App - User: " + userName); // 창 제목 설정
+        setTitle("채팅 앱 - 유저 " + userName); // 창 제목 설정
         setSize(400, 300); // 창 크기 설정
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // 창 종료 시 애플리케이션 종료 설정
 
         chatRoomModel = new DefaultListModel<>(); // 채팅방 모델 생성
         // 채팅방 목록에 예시 방 추가
 
-        //테스트용 3개 채팅룸
-        chatRoomModel.addElement("Chat Room 1");
-        chatRoomModel.addElement("Chat Room 2");
-        chatRoomModel.addElement("Chat Room 3");
+        // 테스트용 3개 채팅룸
+        chatRoomModel.addElement("채팅방 1");
+        chatRoomModel.addElement("채팅방 2");
+        chatRoomModel.addElement("채팅방 3");
 
         chatRoomList = new JList<>(chatRoomModel); // 채팅방 목록을 JList에 추가
         chatRoomList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // 단일 선택 모드로 설정
