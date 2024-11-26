@@ -8,10 +8,14 @@ public class ChatAppMain extends JFrame {
     private DefaultListModel<String> chatRoomModel; // 채팅방 목록의 데이터 모델
     private HashMap<String, ChatRoomWindow> openChatRooms; // 열린 채팅방을 관리하는 HashMap (방 이름: 창 객체)
     private String userName; // 사용자 이름
+    private String serverIp;
+    private int serverPort;
 
     // 생성자: 사용자 이름을 인자로 받아 UI 설정 및 초기화
-    public ChatAppMain(String userName) {
+    public ChatAppMain(String userName, String serverIp, int serverPort) {
         this.userName = userName; // StartScreen에서 전달받은 사용자 이름
+        this.serverIp = serverIp;
+        this.serverPort = serverPort;
         setTitle("채팅 앱 - 유저 " + userName); // 창 제목 설정
         setSize(400, 300); // 창 크기 설정
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // 창 종료 시 애플리케이션 종료 설정
@@ -52,7 +56,8 @@ public class ChatAppMain extends JFrame {
     // 채팅방 열기 메서드
     private void openChatRoom(String roomName) {
         if (!openChatRooms.containsKey(roomName)) { // 해당 채팅방이 열려 있지 않은 경우
-            ChatRoomWindow chatRoomWindow = new ChatRoomWindow(roomName, userName); // 새로운 채팅방 창 생성
+            ChatRoomWindow chatRoomWindow = new ChatRoomWindow(roomName, userName, serverIp, serverPort); // 새로운 채팅방 창
+                                                                                                          // 생성
             openChatRooms.put(roomName, chatRoomWindow); // 열린 채팅방 목록에 추가
         } else {
             openChatRooms.get(roomName).setVisible(true); // 이미 열려 있는 경우 해당 창을 표시

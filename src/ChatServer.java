@@ -3,7 +3,7 @@ import java.net.*;
 import java.util.*;
 
 public class ChatServer {
-    private static final int PORT = 12349; // 서버가 실행되는 포트 번호
+    private static final int PORT = 12345; // 서버가 실행되는 포트 번호
     private Map<String, Set<ClientHandler>> roomClients = new HashMap<>(); // 채팅방과 해당 사용자 목록을 매핑하는 데이터 구조
 
     public static void main(String[] args) {

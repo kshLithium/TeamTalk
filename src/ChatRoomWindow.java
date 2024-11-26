@@ -1,16 +1,12 @@
 import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.io.*;
 import java.net.*;
 import java.nio.file.Files;
 import java.util.Base64;
 
 public class ChatRoomWindow extends JFrame {
-    private static final String SERVER_ADDRESS = "localhost"; // 서버 주소
-    private static final int SERVER_PORT = 12349; // 서버 포트 번호
-
     private BufferedReader in; // 서버로부터 메시지를 읽기 위한 스트림
     private PrintWriter out; // 서버로 메시지를 보내기 위한 스트림
     private JTextPane chatArea; // 채팅 메시지를 표시하는 창
@@ -19,11 +15,11 @@ public class ChatRoomWindow extends JFrame {
     private String roomName; // 채팅방 이름
     private Socket socket; // 서버와 연결된 소켓
 
-    public ChatRoomWindow(String roomName, String userName) {
+    public ChatRoomWindow(String roomName, String userName, String serverIp, int serverPort) {
         this.roomName = roomName;
         this.userName = userName;
         setupUI(); // 사용자 인터페이스 초기화
-        connectToServer(); // 서버 연결
+        connectToServer(serverIp, serverPort); // 서버 연결
     }
 
     private void setupUI() {
@@ -63,9 +59,9 @@ public class ChatRoomWindow extends JFrame {
         setVisible(true); // 윈도우 표시
     }
 
-    private void connectToServer() {
+    private void connectToServer(String serverIp, int serverPort) {
         try {
-            socket = new Socket(SERVER_ADDRESS, SERVER_PORT); // 서버와 소켓 연결
+            socket = new Socket(serverIp, serverPort); // 서버와 소켓 연결
             in = new BufferedReader(new InputStreamReader(socket.getInputStream())); // 입력 스트림 초기화
             out = new PrintWriter(socket.getOutputStream(), true); // 출력 스트림 초기화
 

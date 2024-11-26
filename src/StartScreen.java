@@ -1,45 +1,70 @@
-import javax.swing.*; // JFrame, JTextField, JButton, JLabel, JOptionPane 등 Swing 컴포넌트
-import java.awt.*; // BorderLayout 등 레이아웃 관련 클래스
-import java.awt.event.*;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public class StartScreen extends JFrame {
     private JTextField nameField; // 사용자 이름 입력 필드
+    private JTextField ipField; // IP 주소 입력 필드
+    private JTextField portField; // 포트 번호 입력 필드
 
-    // 생성자: 화면 초기화 및 설정
+    private String userName; // 유저 id
+    private String serverIp; // ip 주소
+    private int serverPort; // 포트 번호
+
     public StartScreen() {
-        setTitle("이름을 입력하세요"); // 창 제목 설정
-        setSize(300, 150); // 창 크기 설정
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // 창 종료 시 애플리케이션 종료
-        setLocationRelativeTo(null); // 창을 화면 중앙에 표시
+        setTitle("로그인 화면");
+        setSize(300, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
 
-        nameField = new JTextField(20); // 사용자 이름을 입력받을 텍스트 필드 생성
-        JButton startButton = new JButton("채팅을 시작합니다"); // 채팅 시작 버튼 생성
+        // 레이아웃 구성
+        setLayout(new GridLayout(5, 1));
 
-        // 버튼 클릭 시 이벤트 리스너 설정
-        startButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String userName = nameField.getText().trim(); // 입력된 이름을 가져와서 공백 제거
-                if (!userName.isEmpty()) { // 이름이 입력된 경우
-                    dispose(); // 현재 창 닫기
-                    new ChatAppMain(userName).setVisible(true); // ChatAppMain 창을 열고 사용자 이름 전달
-                } else {
-                    // 이름이 비어 있을 경우 에러 메시지 표시
-                    JOptionPane.showMessageDialog(StartScreen.this, "이름을 입력하세요.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+        JLabel titleLabel = new JLabel("TALK", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        add(titleLabel);
 
-        // 레이아웃 설정 및 컴포넌트 추가
-        setLayout(new BorderLayout());
-        add(new JLabel("이름을 입력하세요"), BorderLayout.NORTH); // 상단에 안내 텍스트 추가
-        add(nameField, BorderLayout.CENTER); // 중앙에 이름 입력 필드 추가
-        add(startButton, BorderLayout.SOUTH); // 하단에 시작 버튼 추가
+        nameField = new JTextField();
+        add(createLabeledField("ID", nameField));
+
+        ipField = new JTextField("127.0.0.1"); // 기본값 설정
+        add(createLabeledField("IP Address", ipField));
+
+        portField = new JTextField("12345"); // 기본값 설정
+        add(createLabeledField("Port Number", portField));
+
+        JButton loginButton = new JButton("로그인");
+        loginButton.addActionListener(this::onLogin);
+        add(loginButton);
     }
 
-    // main 메서드: 애플리케이션 시작 지점
+    private JPanel createLabeledField(String label, JTextField textField) {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(new JLabel(label), BorderLayout.WEST);
+        panel.add(textField, BorderLayout.CENTER);
+        return panel;
+    }
+
+    private void onLogin(ActionEvent e) {
+        userName = nameField.getText().trim();
+        serverIp = ipField.getText().trim();
+        try {
+            serverPort = Integer.parseInt(portField.getText().trim());
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "포트 번호는 숫자로 입력해주세요.", "오류", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (userName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "ID를 입력해주세요.", "오류", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        dispose(); // 현재 창 닫기
+        new ChatAppMain(userName, serverIp, serverPort).setVisible(true); // 메인 애플리케이션 실행
+    }
+
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new StartScreen().setVisible(true); // StartScreen 창을 표시
-        });
+        SwingUtilities.invokeLater(() -> new StartScreen().setVisible(true));
     }
 }
