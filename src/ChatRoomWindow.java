@@ -157,9 +157,24 @@ public class ChatRoomWindow extends JFrame {
 
     private void appendMessage(String message) {
         try {
-            StyledDocument doc = chatArea.getStyledDocument(); // 채팅 영역의 문서 가져오기
-            doc.insertString(doc.getLength(), message + "\n", null); // 메시지 추가
-            chatArea.setCaretPosition(doc.getLength()); // 스크롤을 최신 메시지로 이동
+            StyledDocument doc = chatArea.getStyledDocument();
+            SimpleAttributeSet attributes = new SimpleAttributeSet();
+
+            // 본인의 메시지인지 확인 (메시지가 userName으로 시작하는지)
+            if (message.startsWith(userName + ": ")) {
+                // 본인 메시지는 오른쪽 정렬
+                StyleConstants.setAlignment(attributes, StyleConstants.ALIGN_RIGHT);
+            } else {
+                // 다른 사람의 메시지는 왼쪽 정렬
+                StyleConstants.setAlignment(attributes, StyleConstants.ALIGN_LEFT);
+            }
+
+            // 단락 속성 설정
+            doc.setParagraphAttributes(doc.getLength(), 1, attributes, true);
+
+            // 메시지 추가
+            doc.insertString(doc.getLength(), message + "\n", null);
+            chatArea.setCaretPosition(doc.getLength());
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
