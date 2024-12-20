@@ -56,11 +56,21 @@ public class ChatAppMain extends JFrame {
     // 채팅방 열기 메서드
     private void openChatRoom(String roomName) {
         if (!openChatRooms.containsKey(roomName)) { // 해당 채팅방이 열려 있지 않은 경우
-            ChatRoomWindow chatRoomWindow = new ChatRoomWindow(roomName, userName, serverIp, serverPort); // 새로운 채팅방 창
-                                                                                                          // 생성
-            openChatRooms.put(roomName, chatRoomWindow); // 열린 채팅방 목록에 추가
+            ChatRoomWindow chatRoomWindow = new ChatRoomWindow(roomName, userName, serverIp, serverPort);
+            openChatRooms.put(roomName, chatRoomWindow);
         } else {
-            openChatRooms.get(roomName).setVisible(true); // 이미 열려 있는 경우 해당 창을 표시
+            ChatRoomWindow existingWindow = openChatRooms.get(roomName);
+            if (existingWindow.isVisible()) {
+                // 이미 채팅방이 열려있고 보이는 상태라면 경고 메시지 표시
+                JOptionPane.showMessageDialog(
+                        this,
+                        "이미 열려있는 채팅방입니다.",
+                        "알림",
+                        JOptionPane.INFORMATION_MESSAGE);
+                existingWindow.toFront(); // 기존 창을 앞으로 가져오기
+            } else {
+                existingWindow.setVisible(true); // 숨겨져 있던 창을 다시 보이게 함
+            }
         }
     }
 }
